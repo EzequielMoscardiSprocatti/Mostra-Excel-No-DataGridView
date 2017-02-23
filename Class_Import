@@ -1,0 +1,64 @@
+sing System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+//Blibliotecas que utilizaremos para importa o excel para o dgv
+// libraries we use to import excel to dgv
+using System.Windows.Forms;
+using System.Data;
+using System.Data.OleDb;
+
+namespace Data_Grid_View_Excel_Mod
+{
+    class Importanto_Excel_p_DGV
+    {
+        //Declaro as conexoes que utilizaremos
+        OleDbConnection conn;
+        OleDbDataAdapter MyDataAdapter;
+        DataTable dt;
+
+       //desde já declaro as variaveis do que utilizareis
+        // que será o DataGridView e o nome do arquivo
+        public void ImportaExcel(DataGridView dgv, String NomeArquivo)
+        {
+            //Declaro o caminho em que o arquivo se encontra
+            string caminho_aquivo = "";
+
+           //faço a função try cath para repara alguns erros futuros
+            try
+            {
+                //chamo a função Caixa de dialogo para abrir os arquivos
+                OpenFileDialog AbrirArquivo = new OpenFileDialog();
+
+                //Faço um filtro nos arquivos que desejos abrir neste caso somente o excel que desejo visualizar
+                AbrirArquivo.Filter = "Excel Files | *.xlsx*";
+                //Coloco um titulo no caixa de dialogo
+                AbrirArquivo.Title = "Informe por gentileza qual arquivo deseja Importa para aplicação";
+                //e faço um IF para validar a abertura do arquivo e se o mesmo existe
+                if (AbrirArquivo.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {   
+                    
+                    if (AbrirArquivo.FileName.Equals("") == false)
+                    {
+                        caminho_aquivo = AbrirArquivo.FileName;
+                    }
+                }
+
+               //aqui faco a conexao do arquivo com minha app
+                conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;data source=" + caminho_aquivo + ";Extended Properties='Excel 12.0 Xml;HDR=Yes'");
+                MyDataAdapter = new OleDbDataAdapter("Select * From [" + NomeArquivo + "$]", conn);
+                dt = new DataTable();
+                MyDataAdapter.Fill(dt);
+                dgv.DataSource = dt;
+            }
+
+            catch (Exception)
+            {
+                MessageBox.Show("Erro ao tentar subir o arquivo", "Error Import");
+            }
+        }
+
+    }
+}
