@@ -1,0 +1,14 @@
+
+Private void btn_import_Click(object sender, EventArgs e)
+        {
+            //Use a MessageBox para informa qual arquivo você deseja importar
+            // Use the MessageBox to tell which file you want to import
+            MessageBox.Show("Escolha o arquivo que vc desja subir");
+
+            //Informando qual arquvivo que você deseja importa!
+            //e instanciamos uma nova classe em que já criamos
+            // Telling which file you want to import!
+            // and instantiate a new class we've already created
+            new Importanto_Excel_p_DGV().ImportaExcel(dataGridView1, "Plan1");
+
+        }
